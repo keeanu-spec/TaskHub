@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Solo mostrar errores reales — silencia Hibernate, HikariCP, Spring -->
+    <logger name="org.hibernate"               level="ERROR"/>
+    <logger name="com.zaxxer.hikari"           level="ERROR"/>
+    <logger name="org.springframework"         level="ERROR"/>
+    <logger name="org.jboss"                   level="ERROR"/>
+    <logger name="com.h2database"              level="ERROR"/>
+
+    <!-- Root: solo ERROR en consola -->
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+</configuration>
