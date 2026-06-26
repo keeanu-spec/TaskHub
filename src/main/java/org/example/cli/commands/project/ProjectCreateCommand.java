@@ -19,7 +19,11 @@ public class ProjectCreateCommand implements Command {
         User ownerUser = context.userService().findByEmail(owner)
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado: " + owner));
 
-        Project project = context.projectService().create(name, desc.isBlank() ? null : desc, ownerUser);
+        String folderPath = context.shell().isInProject()
+            ? context.shell().dirPath()  // mismo directorio del proyecto actual
+            : context.shell().dirPath();
+        Project project = context.projectService().createInFolder(
+            name, desc.isBlank() ? null : desc, ownerUser, folderPath);
         context.output().success("Proyecto creado: " + project.getName() + " [" + project.getId() + "]");
     }
 }

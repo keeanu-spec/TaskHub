@@ -20,8 +20,8 @@
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 
-            <!-- Hibernate crea tablas si no existen, no falla en reinicios -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!-- Flyway gestiona el esquema — Hibernate solo valida que coincida -->
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
 
             <!-- Dialecto H2 para Hibernate 6 -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>

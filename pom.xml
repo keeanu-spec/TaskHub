@@ -70,6 +70,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- ===== Flyway — migraciones de BD sin pérdida de datos ===== -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.22.3</version>
+        </dependency>
+
         <!-- ===== CLI (JLine + Gson — kept for existing CLI layer) ===== -->
         <dependency>
             <groupId>org.jline</groupId>

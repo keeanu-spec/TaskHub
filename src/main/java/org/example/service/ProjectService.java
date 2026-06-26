@@ -32,6 +32,17 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
+    public List<Project> findByFolderPath(String folderPath) {
+        return projectRepository.findByFolderPath(folderPath);
+    }
+
+    /** Crea un proyecto en una carpeta específica del filesystem virtual. */
+    public Project createInFolder(String name, String description, User owner, String folderPath) {
+        Project p = new Project(name, description, owner);
+        p.setFolderPath(folderPath);
+        return projectRepository.save(p);
+    }
+
     public List<Project> findByOwnerId(UUID ownerId) {
         return projectRepository.findByOwnerId(ownerId);
     }

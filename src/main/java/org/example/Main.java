@@ -7,7 +7,10 @@ import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
 import org.example.Config.JpaConfig;
+import org.example.Config.FlywayConfig;
 import org.example.cli.CommandContext;
+import org.example.cli.ShellState;
+import org.example.cli.VirtualFilesystem;
 import org.example.cli.CommandRegistry;
 import org.example.cli.DashboardRenderer;
 import org.example.cli.LoadingScreen;
@@ -17,9 +20,18 @@ import org.example.cli.commands.ClearCommand;
 import org.example.cli.commands.DiscordCommand;
 import org.example.cli.commands.ExitCommand;
 import org.example.cli.commands.HelpCommand;
-import org.example.cli.commands.task.*;
+import org.example.cli.commands.task.ExportProjectCommand;
+import org.example.cli.commands.task.NoteAddCommand;
+import org.example.cli.commands.task.NoteListCommand;
+import org.example.cli.commands.task.StatsCommand;
+import org.example.cli.commands.task.TaskCreateCommand;
+import org.example.cli.commands.task.TaskFilterCommand;
+import org.example.cli.commands.task.TaskStartCommand;
+import org.example.cli.commands.task.TaskStopCommand;
+import org.example.cli.commands.task.TaskTimeCommand;
 import org.example.cli.commands.user.CreateUserCommand;
 import org.example.cli.commands.user.ListUsersCommand;
+import org.example.cli.commands.fs.*;
 import org.example.cli.commands.project.ProjectCreateCommand;
 import org.example.cli.commands.project.ProjectListCommand;
 import org.example.cli.commands.task.TaskCreateCommand;
@@ -36,6 +48,9 @@ public class Main {
 
         LoadingScreen loading = new LoadingScreen();
         loading.start();
+
+        // Migraciones de BD — siempre antes de JPA
+        FlywayConfig.migrate();
 
         Terminal terminal     = TerminalBuilder.terminal();
         LineReader lineReader = LineReaderBuilder.builder().terminal(terminal).build();
@@ -60,9 +75,11 @@ public class Main {
         Output   output   = new Output();
         Prompter prompter = new Prompter(lineReader);
 
-        CommandRegistry registry = new CommandRegistry();
+        CommandRegistry   registry = new CommandRegistry();
+        ShellState        shell    = new ShellState();
+        VirtualFilesystem vfs      = new VirtualFilesystem();
         CommandContext  ctx      = new CommandContext(
-            userService, projectSvc, taskSvc, noteSvc, timeSvc, output, prompter, registry);
+            userService, projectSvc, taskSvc, noteSvc, timeSvc, output, prompter, registry, shell, vfs);
 
         // ── Comandos generales ─────────────────────────────────────────────
         registry.register(new HelpCommand());
@@ -79,9 +96,18 @@ public class Main {
         registry.register(new ProjectCreateCommand());
         registry.register(new ProjectListCommand());
 
+        // ── Filesystem virtual ────────────────────────────────────────────
+        registry.register(new org.example.cli.commands.fs.LsCommand());
+        registry.register(new CdCommand());
+        registry.register(new PwdCommand());
+        registry.register(new MkdirCommand());
+        registry.register(new TouchCommand());
+        registry.register(new RmCommand());
+        registry.register(new CatCommand());
+        registry.register(new TreeCommand());
+
         // ── Tareas — Fase A ────────────────────────────────────────────────
         registry.register(new TaskCreateCommand());
-        registry.register(new LsCommand());
         registry.register(new TaskFilterCommand());
         registry.register(new ExportProjectCommand());
 

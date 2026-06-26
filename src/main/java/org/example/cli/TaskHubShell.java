@@ -1,7 +1,7 @@
 package org.example.cli;
 
-import java.util.Optional;
 import org.jline.reader.LineReader;
+import java.util.Optional;
 
 public class TaskHubShell {
 
@@ -23,15 +23,19 @@ public class TaskHubShell {
         dashboard.render();
 
         while (true) {
-            String line = lineReader.readLine("TaskHub> ");
+            // Prompt dinámico según directorio actual
+            String prompt = commandContext.shell().prompt();
+            String line = lineReader.readLine(prompt);
             if (line == null || line.isBlank()) continue;
 
             Optional<Command> command = commandRegistry.find(line.trim());
             if (command.isEmpty()) {
-                commandContext.output().error("Comando no encontrado: '" + line.trim() + "'. Escribe 'Help' para ver los disponibles.");
+                commandContext.output().error(
+                    "Comando no encontrado: '" + line.trim().split("\\s+")[0] + "'  →  escribe 'help' para ver los disponibles.");
             } else {
                 try {
-                    command.get().execute(commandContext);
+                    String[] args = CommandRegistry.parseArgs(line);
+                    command.get().execute(commandContext, args);
                 } catch (IllegalArgumentException e) {
                     commandContext.output().error("Valor inválido: " + e.getMessage());
                 } catch (Exception e) {

@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface ProjectRepository extends JpaRepository<Project, UUID>, ProjectRepositoryPort {
     List<Project> findByOwnerId(UUID ownerId);
+    List<Project> findByFolderPath(String folderPath);
 }

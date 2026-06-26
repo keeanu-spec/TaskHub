@@ -80,6 +80,19 @@ public class JpaProjectRepository implements Repository<Project, UUID>, ProjectR
     }
 
     @Override
+    public List<Project> findByFolderPath(String folderPath) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                "SELECT p FROM Project p WHERE p.folderPath = :fp", Project.class)
+                .setParameter("fp", folderPath)
+                .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
     public List<Project> findByOwnerId(UUID ownerId) {
         EntityManager em = emf.createEntityManager();
         try {

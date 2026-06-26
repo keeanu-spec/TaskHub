@@ -17,7 +17,7 @@ public class DiscordCommand implements Command{
     public void execute(CommandContext context) {
          try {
             //Open discord URL its not really workiing need check V for see what happend-
-            Runtime.getRuntime().exec("C:\\Users\\Acer\\AppData\\Local\\Discord\\app-1.0.9242\\Discord.exe");
+            new ProcessBuilder("C:\\Users\\Acer\\AppData\\Local\\Discord\\app-1.0.9242\\Discord.exe").start();
         }catch(Exception e) {
             context.output().error(e.getMessage());
         }

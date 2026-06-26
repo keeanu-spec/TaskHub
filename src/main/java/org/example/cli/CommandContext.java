@@ -16,5 +16,7 @@ public record CommandContext(
         TimeTrackingService timeService,
         Output output,
         Prompter prompter,
-        CommandRegistry commandRegistry) {
+        CommandRegistry commandRegistry,
+        ShellState shell,
+        VirtualFilesystem vfs) {
 }

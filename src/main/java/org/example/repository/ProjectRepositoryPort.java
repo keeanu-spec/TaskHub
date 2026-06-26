@@ -15,4 +15,5 @@ public interface ProjectRepositoryPort {
     void deleteById(UUID id);
     boolean existsById(UUID id);
     List<Project> findByOwnerId(UUID ownerId);
+    List<Project> findByFolderPath(String folderPath);
 }
