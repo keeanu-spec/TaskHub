@@ -10,6 +10,8 @@
         <class>org.example.domain.User</class>
         <class>org.example.domain.Project</class>
         <class>org.example.domain.Task</class>
+        <class>org.example.domain.TaskNote</class>
+        <class>org.example.domain.TimeEntry</class>
 
         <properties>
             <!-- Conexión H2 en archivo para persistir entre reinicios -->
